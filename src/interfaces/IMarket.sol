@@ -64,11 +64,11 @@ interface IMarket {
 
     /**
      * @notice Apply outcome and finalize market (resolver only)
-     * @param outcome The final outcome
-     * @param t0Rank Initial rank (for verification)
-     * @param t1Rank Final rank
+     * @param _outcome The final outcome
+     * @param _t0Rank Initial rank (for verification)
+     * @param _t1Rank Final rank
      */
-    function applyOutcome(Outcome outcome, uint16 t0Rank, uint16 t1Rank) external;
+    function applyOutcome(Outcome _outcome, uint16 _t0Rank, uint16 _t1Rank) external;
 
     /**
      * @notice Redeem winning tokens for quote tokens

@@ -17,11 +17,7 @@ import {IMarket} from "../interfaces/IMarket.sol";
 contract Market is IMarket, ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;
 
-    /// @notice Market status enumeration
-    enum MarketStatus { OPEN, PENDING_RESOLVE, COMMITTED, FINALIZED }
-    
-    /// @notice Outcome enumeration
-    enum Outcome { NONE, YES, NO }
+    // Enums are imported from IMarket interface
 
     /// @notice Virtual reserves for CPMM
     struct Reserves {
@@ -335,10 +331,10 @@ contract Market is IMarket, ReentrancyGuard, Pausable {
 
     /**
      * @notice Set market status (factory only)
-     * @param newStatus The new market status
+     * @param status The new market status
      */
-    function setStatus(MarketStatus newStatus) external override onlyFactory {
-        status = newStatus;
+    function setStatus(MarketStatus status) external override onlyFactory {
+        status = status;
     }
 
     /**
@@ -373,14 +369,16 @@ contract Market is IMarket, ReentrancyGuard, Pausable {
             if (yesBalance > 0) {
                 uint256 totalYesSupply = yesToken.totalSupply();
                 payout = (yesBalance * quoteVault) / totalYesSupply;
-                yesToken.burnFrom(msg.sender, yesBalance);
+                IERC20(address(yesToken)).safeTransferFrom(msg.sender, address(this), yesBalance);
+                yesToken.burn(yesBalance);
             }
         } else if (outcome == Outcome.NO) {
             uint256 noBalance = noToken.balanceOf(msg.sender);
             if (noBalance > 0) {
                 uint256 totalNoSupply = noToken.totalSupply();
                 payout = (noBalance * quoteVault) / totalNoSupply;
-                noToken.burnFrom(msg.sender, noBalance);
+                IERC20(address(noToken)).safeTransferFrom(msg.sender, address(this), noBalance);
+                noToken.burn(noBalance);
             }
         }
         

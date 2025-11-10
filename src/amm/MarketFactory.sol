@@ -127,8 +127,8 @@ contract MarketFactory is IMarketFactory, Ownable, ReentrancyGuard, Pausable {
         emit MarketCreated(
             marketId,
             market,
-            newMarket.yesToken(),
-            newMarket.noToken(),
+            address(newMarket.yesToken()),
+            address(newMarket.noToken()),
             quoteToken,
             songId,
             t0Rank,
