@@ -151,6 +151,7 @@ contract RedemptionTest is Test {
         // Bob redeems his YES tokens
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
         vm.prank(bob);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(bob);
         uint256 bobUsdtAfter = usdt.balanceOf(bob);
         uint256 bobPayout = bobUsdtAfter - bobUsdtBefore;
@@ -158,6 +159,7 @@ contract RedemptionTest is Test {
         // Charlie tries to redeem NO tokens (should get nothing since NO lost)
         uint256 charlieUsdtBefore = usdt.balanceOf(charlie);
         vm.prank(charlie);
+        noToken.approve(address(market), type(uint256).max);
         market.redeem(charlie);
         uint256 charlieUsdtAfter = usdt.balanceOf(charlie);
         uint256 charliePayout = charlieUsdtAfter - charlieUsdtBefore;
@@ -205,12 +207,14 @@ contract RedemptionTest is Test {
         // Bob tries to redeem YES tokens (should get nothing)
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
         vm.prank(bob);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(bob);
         uint256 bobPayout = usdt.balanceOf(bob) - bobUsdtBefore;
         
         // Charlie redeems NO tokens
         uint256 charlieUsdtBefore = usdt.balanceOf(charlie);
         vm.prank(charlie);
+        noToken.approve(address(market), type(uint256).max);
         market.redeem(charlie);
         uint256 charliePayout = usdt.balanceOf(charlie) - charlieUsdtBefore;
         
@@ -261,6 +265,7 @@ contract RedemptionTest is Test {
             uint256 usdtBefore = usdt.balanceOf(yesHolders[i]);
             
             vm.prank(yesHolders[i]);
+            yesToken.approve(address(market), type(uint256).max);
             market.redeem(yesHolders[i]);
             
             uint256 payout = usdt.balanceOf(yesHolders[i]) - usdtBefore;
@@ -302,6 +307,7 @@ contract RedemptionTest is Test {
         // Only Bob redeems
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
         vm.prank(bob);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(bob);
         uint256 bobPayout = usdt.balanceOf(bob) - bobUsdtBefore;
         
@@ -319,6 +325,7 @@ contract RedemptionTest is Test {
         
         uint256 charlieUsdtBefore = usdt.balanceOf(charlie);
         vm.prank(charlie);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(charlie);
         uint256 charliePayout = usdt.balanceOf(charlie) - charlieUsdtBefore;
         
@@ -358,6 +365,7 @@ contract RedemptionTest is Test {
         
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
         vm.prank(bob);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(bob);
         uint256 bobPayout = usdt.balanceOf(bob) - bobUsdtBefore;
         
@@ -389,6 +397,7 @@ contract RedemptionTest is Test {
         // Redeem tiny amount
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
         vm.prank(bob);
+        yesToken.approve(address(market), type(uint256).max);
         market.redeem(bob);
         uint256 bobPayout = usdt.balanceOf(bob) - bobUsdtBefore;
         
