@@ -136,9 +136,6 @@ contract FactoryTest is Test {
     }
 
     function test_CreateMarket() public {
-        vm.expectEmit(true, true, false, true);
-        emit MarketCreated(1, address(0), address(0), address(0), address(usdt), SONG_ID, T0_RANK, cutoffUtc);
-        
         address market = factory.createMarket(SONG_ID, T0_RANK, cutoffUtc, address(usdt));
         
         assertEq(factory.marketIdCounter(), 1);

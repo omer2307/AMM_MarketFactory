@@ -4,6 +4,7 @@ pragma solidity ^0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import {MarketFactory} from "../src/amm/MarketFactory.sol";
 import {Market} from "../src/amm/Market.sol";
+import {IMarket} from "../src/interfaces/IMarket.sol";
 import {YesToken} from "../src/tokens/YesToken.sol";
 import {NoToken} from "../src/tokens/NoToken.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -258,22 +259,22 @@ contract MarketTest is Test {
 
     function test_ApplyOutcome() public {
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
-        assertEq(uint256(market.outcome()), uint256(Market.Outcome.YES));
-        assertEq(uint256(market.status()), uint256(Market.MarketStatus.FINALIZED));
+        assertEq(uint256(market.outcome()), uint256(IMarket.Outcome.YES));
+        assertEq(uint256(market.status()), uint256(IMarket.MarketStatus.FINALIZED));
     }
 
     function test_RevertApplyOutcomeUnauthorized() public {
         vm.prank(user1);
         vm.expectRevert(Market.ErrUnauthorized.selector);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
     }
 
     function test_RevertApplyOutcomeInvalidRank() public {
         vm.prank(resolver);
         vm.expectRevert(Market.ErrInvalidState.selector);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK + 1, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK + 1, 50);
     }
 
     function test_RedemptionYesWins() public {
@@ -291,7 +292,7 @@ contract MarketTest is Test {
         
         // Apply YES outcome
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         // Redeem
         uint256 userUsdtBefore = usdt.balanceOf(user2);
@@ -326,7 +327,7 @@ contract MarketTest is Test {
         
         // Apply NO outcome
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.NO, T0_RANK, 150);
+        market.applyOutcome(IMarket.Outcome.NO, T0_RANK, 150);
         
         // Redeem
         uint256 userUsdtBefore = usdt.balanceOf(user2);
@@ -355,7 +356,7 @@ contract MarketTest is Test {
         market.swapQuoteForYes(1000 * 1e6, 0);
         
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         vm.prank(user2);
         market.redeem(user2);

@@ -4,6 +4,7 @@ pragma solidity ^0.8.26;
 import {Test, console} from "forge-std/Test.sol";
 import {MarketFactory} from "../src/amm/MarketFactory.sol";
 import {Market} from "../src/amm/Market.sol";
+import {IMarket} from "../src/interfaces/IMarket.sol";
 import {YesToken} from "../src/tokens/YesToken.sol";
 import {NoToken} from "../src/tokens/NoToken.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -145,7 +146,7 @@ contract RedemptionTest is Test {
         
         // Resolve market with YES winning
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50); // Rank improved to 50
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50); // Rank improved to 50
         
         // Bob redeems his YES tokens
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
@@ -199,7 +200,7 @@ contract RedemptionTest is Test {
         
         // Resolve market with NO winning
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.NO, T0_RANK, 150); // Rank declined to 150
+        market.applyOutcome(IMarket.Outcome.NO, T0_RANK, 150); // Rank declined to 150
         
         // Bob tries to redeem YES tokens (should get nothing)
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
@@ -250,7 +251,7 @@ contract RedemptionTest is Test {
         
         // Resolve YES winning
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         uint256 totalPayouts = 0;
         
@@ -296,7 +297,7 @@ contract RedemptionTest is Test {
         
         // Resolve YES winning
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         // Only Bob redeems
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
@@ -350,7 +351,7 @@ contract RedemptionTest is Test {
         
         // Resolve and redeem
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         uint256 bobYesBalance = yesToken.balanceOf(bob);
         uint256 totalYesSupply = yesToken.totalSupply();
@@ -383,7 +384,7 @@ contract RedemptionTest is Test {
         
         // Resolve
         vm.prank(resolver);
-        market.applyOutcome(Market.Outcome.YES, T0_RANK, 50);
+        market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
         // Redeem tiny amount
         uint256 bobUsdtBefore = usdt.balanceOf(bob);
