@@ -296,9 +296,10 @@ contract MarketTest is Test {
         
         // Redeem
         uint256 userUsdtBefore = usdt.balanceOf(user2);
-        vm.prank(user2);
+        vm.startPrank(user2);
         yesToken.approve(address(market), type(uint256).max);
         market.redeem(user2);
+        vm.stopPrank();
         
         uint256 userUsdtAfter = usdt.balanceOf(user2);
         uint256 payout = userUsdtAfter - userUsdtBefore;
@@ -332,9 +333,10 @@ contract MarketTest is Test {
         
         // Redeem
         uint256 userUsdtBefore = usdt.balanceOf(user2);
-        vm.prank(user2);
-        yesToken.approve(address(market), type(uint256).max);
+        vm.startPrank(user2);
+        noToken.approve(address(market), type(uint256).max);
         market.redeem(user2);
+        vm.stopPrank();
         
         uint256 userUsdtAfter = usdt.balanceOf(user2);
         uint256 payout = userUsdtAfter - userUsdtBefore;
@@ -360,9 +362,10 @@ contract MarketTest is Test {
         vm.prank(resolver);
         market.applyOutcome(IMarket.Outcome.YES, T0_RANK, 50);
         
-        vm.prank(user2);
+        vm.startPrank(user2);
         yesToken.approve(address(market), type(uint256).max);
         market.redeem(user2);
+        vm.stopPrank();
         
         // Try to redeem again
         vm.prank(user2);
